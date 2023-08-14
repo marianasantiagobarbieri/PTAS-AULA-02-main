@@ -7,4 +7,3 @@ app.use(express.json(), routes);
 app.listen(port, () => { console.log(`Run server...${port}`) });
 
 app.get('/', (req,res) => res.send("API-USER"));
-
