@@ -20,8 +20,11 @@ const createUser = async (req, res) => {
 
 const pegarDados = async (req, res) => {
     const users = await User.findAll();
+    try{
      return res.json(users);
-    
+    } catch(error) {
+        res.status(404).json("Ocorreu um erro na busca :(");
+    }
  }
 
 const deleteUser = async (req, res) => {
@@ -70,7 +73,7 @@ const autenticarUser = async (req, res) => {
         });
     }
    catch (error){
-    return res.json("Usuario não encointrado")
+    return res.json("Usuario não encontrado")
    }
 }
 
