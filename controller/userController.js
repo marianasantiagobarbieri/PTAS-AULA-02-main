@@ -20,25 +20,25 @@ const createUser = async (req, res) => {
 
 const pegarDados = async (req, res) => {
     const users = await User.findAll();
-    try{
-     return res.json(users);
-    } catch(error) {
+    try {
+        return res.json(users);
+    } catch (error) {
         res.status(404).json("Ocorreu um erro na busca :(");
     }
- }
+}
 
 const deleteUser = async (req, res) => {
-        const id = req.params;
-        await User.destroy({
-            where:{
-                id:id
-            }
-        })
- }
-
- const updateUser = async (req, res) => {
     const id = req.params;
-    const {name, password, email} = req.body
+    await User.destroy({
+        where: {
+            id: id
+        }
+    })
+}
+
+const updateUser = async (req, res) => {
+    const id = req.params;
+    const { name, password, email } = req.body
     const transformaId = parseInt(id)
     await User.update(
         {
@@ -46,35 +46,35 @@ const deleteUser = async (req, res) => {
             password: password,
             email: email
         },
-      { 
-         where: {
-            id:transformaId
+        {
+            where: {
+                id: transformaId
+            }
         }
-    }
     )
 }
 
 const autenticarUser = async (req, res) => {
-    const {password, email}  = req.body;
-    try{
+    const { password, email } = req.body;
+    try {
         const isAutenticarUser = await User.findOne({
             where: {
                 password: password,
-                email: email       
-                 } 
+                email: email
+            }
         })
-        const token = jwt.sign({id:email}, secret.secret,{
+        const token = jwt.sign({ id: email }, secret.secret, {
             expiresIn: 86400,
         })
         return res.json({
-            name:isAutenticarUser.name,     
-            password:isAutenticarUser.password,
-            email:isAutenticarUser.email,
+            name: isAutenticarUser.name,
+            password: isAutenticarUser.password,
+            email: isAutenticarUser.email,
         });
     }
-   catch (error){
-    return res.json("Usuario não encontrado")
-   }
+    catch (error) {
+        return res.json("Usuario não encontrado")
+    }
 }
 
 module.exports = { createUser, pegarDados, deleteUser, updateUser, autenticarUser };
